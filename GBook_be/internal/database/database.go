@@ -1,19 +1,15 @@
 package database
 
 import (
+	"GBook_be/internal/models"
 	"context"
 	"database/sql"
 	"fmt"
-	"go/ast"
-	"go/token"
 	"log"
 	"os"
 	"strconv"
 	"time"
 
-	"reflect"
-
-	"golang.org/x/tools/go/packages"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -58,9 +54,12 @@ func New() Service {
 	}
 
 	// auto create and update table
-	err = autoMigrate(db)
-	if err != nil {
-		log.Fatal("Cannot create table: ", err)
+	error := autoMigrate(db)
+
+	if error != nil {
+		// This will not be a connection error, but a DSN parse error or
+		// another initialization error.
+		log.Fatal("Cannot create table ", error)
 	}
 
 	sqlDB, err := db.DB()
@@ -130,37 +129,12 @@ func (s *service) Health() map[string]string {
 
 // Hàm tự động gọi AutoMigrate cho tất cả các model
 func autoMigrate(db *gorm.DB) error {
-	// Quét package models
-	pkgs, err := packages.Load(&packages.Config{Mode: packages.LoadSyntax}, "GBook_be/internal/models")
-	if err != nil {
-		return err
-	}
+	error := db.AutoMigrate(
+		&models.Book{},
+		&models.Author{},
+	)
 
-	for _, pkg := range pkgs {
-		for _, file := range pkg.Syntax {
-			// Duyệt qua các declaration trong mỗi file
-			for _, decl := range file.Decls {
-				// Kiểm tra xem declaration có phải là một type
-				if genDecl, ok := decl.(*ast.GenDecl); ok && genDecl.Tok == token.TYPE {
-					for _, spec := range genDecl.Specs {
-						if typeSpec, ok := spec.(*ast.TypeSpec); ok {
-							// Lấy tên kiểu và kiểu thực tế
-							typeName := typeSpec.Name.Name
-							// Kiểm tra xem kiểu có phải là một struct không
-							if _, ok := typeSpec.Type.(*ast.StructType); ok {
-								// Tạo một thể hiện của kiểu
-								model := reflect.New(reflect.TypeOf(typeName)).Interface()
-								if err := db.AutoMigrate(model); err != nil {
-									return err
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	return nil
+	return error
 }
 
 // Close closes the database connection.

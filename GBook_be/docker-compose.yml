@@ -1,5 +1,5 @@
 services:
-  mysql_bp:
+  mysql_gbook:
     image: mysql:latest
     restart: unless-stopped
     environment:
@@ -9,8 +9,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${GOBOOK_DB_ROOT_PASSWORD}
     ports:
       - "${GOBOOK_DB_PORT}:3306"
-    volumes:
-      - mysql_volume_bp:/var/lib/mysql
+    # volumes:
+    #   - mysql_volume_bp:/var/lib/mysql
 
-volumes:
-  mysql_volume_bp:
+# volumes:
+#   mysql_volume_bp:
