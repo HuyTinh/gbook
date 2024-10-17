@@ -1,6 +1,7 @@
 package database
 
 import (
+	"GBook_be/internal/models"
 	"context"
 	"database/sql"
 	"fmt"
@@ -9,8 +10,8 @@ import (
 	"strconv"
 	"time"
 
-	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/joho/godotenv/autoload"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 // Service represents a service that interacts with a database.
@@ -29,11 +30,11 @@ type service struct {
 }
 
 var (
-	dbname     = os.Getenv("BLUEPRINT_DB_DATABASE")
-	password   = os.Getenv("BLUEPRINT_DB_PASSWORD")
-	username   = os.Getenv("BLUEPRINT_DB_USERNAME")
-	port       = os.Getenv("BLUEPRINT_DB_PORT")
-	host       = os.Getenv("BLUEPRINT_DB_HOST")
+	dbname     = os.Getenv("GOBOOK_DB_DATABASE")
+	password   = os.Getenv("GOBOOK_DB_PASSWORD")
+	username   = os.Getenv("GOBOOK_DB_USERNAME")
+	port       = os.Getenv("GOBOOK_DB_PORT")
+	host       = os.Getenv("GOBOOK_DB_HOST")
 	dbInstance *service
 )
 
@@ -44,18 +45,34 @@ func New() Service {
 	}
 
 	// Opening a driver typically will not attempt to connect to the database.
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", username, password, host, port, dbname))
+	db, err := gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbname)), &gorm.Config{})
+
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
 		// another initialization error.
 		log.Fatal(err)
 	}
-	db.SetConnMaxLifetime(0)
-	db.SetMaxIdleConns(50)
-	db.SetMaxOpenConns(50)
+
+	// auto create and update table
+	error := autoMigrate(db)
+
+	if error != nil {
+		// This will not be a connection error, but a DSN parse error or
+		// another initialization error.
+		log.Fatal("Cannot create table ", error)
+	}
+
+	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetConnMaxLifetime(time.Hour)
 
 	dbInstance = &service{
-		db: db,
+		db: sqlDB,
 	}
 	return dbInstance
 }
@@ -108,6 +125,16 @@ func (s *service) Health() map[string]string {
 	}
 
 	return stats
+}
+
+// Hàm tự động gọi AutoMigrate cho tất cả các model
+func autoMigrate(db *gorm.DB) error {
+	error := db.AutoMigrate(
+		&models.Book{},
+		&models.Author{},
+	)
+
+	return error
 }
 
 // Close closes the database connection.
