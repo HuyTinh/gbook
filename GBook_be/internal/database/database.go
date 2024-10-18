@@ -38,14 +38,19 @@ var (
 	dbInstance *service
 )
 
+var DB *gorm.DB
+
 func New() Service {
 	// Reuse Connection
+
+	var err error
+
 	if dbInstance != nil {
 		return dbInstance
 	}
 
 	// Opening a driver typically will not attempt to connect to the database.
-	db, err := gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbname)), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbname)), &gorm.Config{})
 
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
@@ -54,7 +59,7 @@ func New() Service {
 	}
 
 	// auto create and update table
-	error := autoMigrate(db)
+	error := autoMigrate(DB)
 
 	if error != nil {
 		// This will not be a connection error, but a DSN parse error or
@@ -62,7 +67,7 @@ func New() Service {
 		log.Fatal("Cannot create table ", error)
 	}
 
-	sqlDB, err := db.DB()
+	sqlDB, err := DB.DB()
 	if err != nil {
 		log.Fatal(err)
 	}
