@@ -1,26 +1,38 @@
 package controllers
 
 import (
+	"GBook_be/internal/database"
+	"GBook_be/internal/dto/response"
 	"GBook_be/internal/models"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type BookHandler struct {
-	books []models.Book
-}
+func GetAllBooks(c *gin.Context) {
 
-// NewBookHandler creates a new instance of BookHandler
-func NewBookHandler() *BookHandler {
-	return &BookHandler{
-		books: []models.Book{
-			{ID: 1, Title: "1984", Isbn: "1234567890", Price: 10000},
-			{ID: 2, Title: "To Kill a Mockingbird", Isbn: "1234567891", Price: 20000},
-		},
+	var books []models.Book
+
+	if result := database.DB.Find(&books); result.Error != nil {
+		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		return
 	}
+
+	c.JSON(200, response.InitializeAPIResponse(1000, "", books))
 }
 
-func (bh *BookHandler) GetAllBook(c *gin.Context) {
-	c.JSON(http.StatusOK, bh.books)
+func CreateBook(c *gin.Context) {
+
+	var newBook models.Book
+
+	if error := c.ShouldBindJSON(&newBook); error != nil {
+		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		return
+	}
+
+	if result := database.DB.Create(&newBook); result.Error != nil {
+		c.JSON(500, response.InitializeAPIResponse(500, "Failed to create book", ""))
+		return
+	}
+
+	c.JSON(200, response.InitializeAPIResponse(1000, "", newBook))
 }

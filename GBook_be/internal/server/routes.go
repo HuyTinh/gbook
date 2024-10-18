@@ -1,7 +1,7 @@
 package server
 
 import (
-	"GBook_be/internal/controllers"
+	"GBook_be/internal/routes"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,11 +10,7 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
-	bookHandler := controllers.NewBookHandler()
-
-	r.GET("/books", bookHandler.GetAllBook)
-
-	// r.GET("/health", s.healthHandler)
+	routes.RegisterBookRouter(r)
 
 	return r
 }
