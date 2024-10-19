@@ -1,18 +1,28 @@
 package controllers
 
 import (
-	"GBook_be/internal/database"
 	"GBook_be/internal/dto/response"
 	"GBook_be/internal/models"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func GetAllBooks(c *gin.Context) {
+type BookController struct {
+	db *gorm.DB
+}
+
+func NewBookController(db *gorm.DB) *BookController {
+	return &BookController{
+		db: db,
+	}
+}
+
+func (bc *BookController) GetAllBooks(c *gin.Context) {
 
 	var books []models.Book
 
-	if result := database.DB.Find(&books); result.Error != nil {
+	if result := bc.db.Find(&books); result.Error != nil {
 		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
 		return
 	}
@@ -20,7 +30,19 @@ func GetAllBooks(c *gin.Context) {
 	c.JSON(200, response.InitializeAPIResponse(1000, "", books))
 }
 
-func CreateBook(c *gin.Context) {
+func (bc *BookController) GetBookById(c *gin.Context) {
+
+	var books []models.Book
+
+	if result := bc.db.First(&books, c.Param("id")); result.Error != nil {
+		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		return
+	}
+
+	c.JSON(200, response.InitializeAPIResponse(1000, "", books))
+}
+
+func (bc *BookController) CreateBook(c *gin.Context) {
 
 	var newBook models.Book
 
@@ -29,7 +51,7 @@ func CreateBook(c *gin.Context) {
 		return
 	}
 
-	if result := database.DB.Create(&newBook); result.Error != nil {
+	if result := bc.db.Create(&newBook); result.Error != nil {
 		c.JSON(500, response.InitializeAPIResponse(500, "Failed to create book", ""))
 		return
 	}
