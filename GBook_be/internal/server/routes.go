@@ -1,6 +1,7 @@
 package server
 
 import (
+	"GBook_be/internal/database"
 	"GBook_be/internal/routes"
 	"net/http"
 
@@ -10,7 +11,10 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
-	routes.RegisterBookRouter(r)
+	// Initial database
+	db := database.DB
+
+	routes.RegisterBookRouter(r, db)
 
 	return r
 }
