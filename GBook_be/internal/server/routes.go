@@ -11,7 +11,7 @@ import (
 func (s *Server) RegisterRoutes() http.Handler {
 	r := gin.Default()
 
-	// Initial database
+	// Initialize database
 	db := database.DB
 
 	routes.RegisterBookRouter(r, db)
