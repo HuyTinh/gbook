@@ -5,6 +5,8 @@ import (
 	"GBook_be/internal/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
+	"github.com/thoas/go-funk"
 	"gorm.io/gorm"
 )
 
@@ -22,36 +24,52 @@ func (bc *BookController) GetAllBooks(c *gin.Context) {
 
 	var books []models.Book
 
-	if result := bc.db.Find(&books); result.Error != nil {
+	if result := bc.db.Preload("Author").Find(&books); result.Error != nil {
 		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
 		return
 	}
 
-	c.JSON(200, response.InitializeAPIResponse(1000, "", books))
+	bookResponses := funk.Map(books, func(book models.Book) response.BookResponse {
+		var bookResponse response.BookResponse
+		copier.Copy(&bookResponse, &book)
+		return bookResponse
+	}).([]response.BookResponse)
+
+	c.JSON(200, response.InitializeAPIResponse(1000, "", bookResponses))
 }
 
 func (bc *BookController) GetBookById(c *gin.Context) {
 
-	var books []models.Book
+	var book models.Book
 
-	if result := bc.db.First(&books, c.Param("id")); result.Error != nil {
+	if result := bc.db.Preload("Author").First(&book, c.Param("id")); result.Error != nil {
 		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
 		return
 	}
 
-	c.JSON(200, response.InitializeAPIResponse(1000, "", books))
+	var bookResponse response.BookResponse
+
+	_ = copier.Copy(&bookResponse, &book)
+
+	c.JSON(200, response.InitializeAPIResponse(1000, "", bookResponse))
 }
 
 func (bc *BookController) CreateBook(c *gin.Context) {
 
 	var newBook models.Book
 
-	if error := c.ShouldBindJSON(&newBook); error != nil {
+	if err := c.ShouldBindJSON(&newBook); err != nil {
 		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
 		return
 	}
 
-	if result := bc.db.Create(&newBook); result.Error != nil {
+	var author models.Author
+	if err := bc.db.Find(&author, newBook.AuthorID).Error; err != nil {
+		c.JSON(500, response.InitializeAPIResponse(500, "Author not found", ""))
+		return
+	}
+
+	if err := bc.db.Create(&newBook).Error; err != nil {
 		c.JSON(500, response.InitializeAPIResponse(500, "Failed to create book", ""))
 		return
 	}
