@@ -11,7 +11,8 @@ func RegisterBookRouter(r *gin.Engine, db *gorm.DB) {
 
 	bookController := controllers.NewBookController(db)
 
-	r.GET("/books", bookController.GetAllBooks)
-	r.GET("/books/:id", bookController.GetBookById)
-	r.POST("/books", bookController.CreateBook)
+	bookGroupRouter := r.Group("/books")
+	bookGroupRouter.GET("", bookController.GetAllBooks)
+	bookGroupRouter.GET("/:id", bookController.GetBookById)
+	bookGroupRouter.POST("", bookController.CreateBook)
 }

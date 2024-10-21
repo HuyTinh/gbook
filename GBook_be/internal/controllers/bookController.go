@@ -3,6 +3,7 @@ package controllers
 import (
 	"GBook_be/internal/dto/response"
 	"GBook_be/internal/models"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
@@ -43,7 +44,7 @@ func (bc *BookController) GetBookById(c *gin.Context) {
 	var book models.Book
 
 	if result := bc.db.Preload("Author").First(&book, c.Param("id")); result.Error != nil {
-		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		c.JSON(400, response.InitializeAPIResponse(400, fmt.Sprintf("Book with id = %s is not found", c.Param("id")), ""))
 		return
 	}
 
