@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	"gorm.io/driver/mysql"
+	sqlite "github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -31,10 +31,6 @@ type service struct {
 
 var (
 	dbname     = os.Getenv("GOBOOK_DB_DATABASE")
-	password   = os.Getenv("GOBOOK_DB_PASSWORD")
-	username   = os.Getenv("GOBOOK_DB_USERNAME")
-	port       = os.Getenv("GOBOOK_DB_PORT")
-	host       = os.Getenv("GOBOOK_DB_HOST")
 	dbInstance *service
 )
 
@@ -49,8 +45,7 @@ func New() Service {
 		return dbInstance
 	}
 
-	// Opening a driver typically will not attempt to connect to the database.
-	DB, err = gorm.Open(mysql.Open(fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbname)), &gorm.Config{})
+	DB, err = gorm.Open(sqlite.Open(fmt.Sprintf("%s.db", dbname)), &gorm.Config{})
 
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
