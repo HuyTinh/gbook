@@ -5,6 +5,7 @@ import "time"
 type Book struct {
 	ID            uint   `gorm:"primaryKey"`
 	Name          string `gorm:"size:255;not null"`
+	Slug          string `gorm:"size:255;not null"`
 	AuthorID      uint   `gorm:"not null"`
 	GenreID       uint
 	Price         float64 `gorm:"not null"`
