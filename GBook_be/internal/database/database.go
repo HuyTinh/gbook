@@ -132,6 +132,14 @@ func autoMigrate(db *gorm.DB) error {
 	error := db.AutoMigrate(
 		&models.Book{},
 		&models.Author{},
+		&models.BookSupplier{},
+		&models.Customer{},
+		&models.Genre{},
+		&models.Order{},
+		&models.OrderDetail{},
+		&models.Payement{},
+		&models.Review{},
+		&models.Supplier{},
 	)
 
 	return error
