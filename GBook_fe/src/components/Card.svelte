@@ -1,6 +1,5 @@
 <script>
   // @ts-nocheck
-
   import { Badge, Button, Card, Group, Image, Text } from "@svelteuidev/core";
 
   export let title;

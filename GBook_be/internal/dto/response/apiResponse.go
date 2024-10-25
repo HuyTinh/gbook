@@ -7,7 +7,6 @@ type APIResponse[T any] struct {
 }
 
 func InitializeAPIResponse[T any](code int, message string, data T) *APIResponse[T] {
-
 	return &APIResponse[T]{
 		Code:    code,
 		Message: message,

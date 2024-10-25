@@ -1,7 +1,9 @@
 <script lang="ts">
-    import "../app.css";
+  import "../app.css";
+  import Navbar from "../components/Navbar.svelte";
 </script>
 
 <div class="h-screen">
-    <slot />
+  <Navbar />
+  <slot />
 </div>
