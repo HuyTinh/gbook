@@ -12,7 +12,7 @@ type Book struct {
 	StockQuantity int     `gorm:"not null"`
 	PublishedDate time.Time
 	ISBN          string `gorm:"size:13;unique"`
-	Dessctiption  string `gorm:"type:text"`
+	Description   string `gorm:"type:text"`
 	CoverImageURL string `gorm:"size:255"`
 	Author        Author `gorm:"foreignKey:AuthorID"`
 	Genre         Genre  `gorm:"foreignKey:GenreID"`

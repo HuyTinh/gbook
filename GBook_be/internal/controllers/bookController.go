@@ -15,7 +15,7 @@ type BookController struct {
 	db *gorm.DB
 }
 
-func NewBookController(db *gorm.DB) *BookController {
+func InitializeBookController(db *gorm.DB) *BookController {
 	return &BookController{
 		db: db,
 	}
