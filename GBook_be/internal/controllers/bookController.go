@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"GBook_be/internal/dto/response"
+	response "GBook_be/internal/dto/response"
 	"GBook_be/internal/models"
 	"fmt"
 
@@ -76,4 +76,22 @@ func (bc *BookController) CreateBook(c *gin.Context) {
 	}
 
 	c.JSON(200, response.InitializeAPIResponse(1000, "", newBook))
+}
+
+func (bc *BookController) UpdateBook(c *gin.Context) {
+
+	var updateBook models.Book
+
+	if err := c.ShouldBindJSON(&updateBook); err != nil {
+		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		return
+	}
+
+	if err := bc.db.Updates(&updateBook); err != nil {
+		c.JSON(500, response.InitializeAPIResponse(500, "Failed to update book", ""))
+		return
+	}
+
+	c.JSON(200, response.InitializeAPIResponse(200, "", updateBook))
+
 }
