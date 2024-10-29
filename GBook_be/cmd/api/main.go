@@ -1,8 +1,8 @@
 package main
 
 import (
-	"GBook_be/internal/database"
 	"GBook_be/internal/server"
+	"GBook_be/internal/services/authors"
 	"GBook_be/internal/services/books"
 	"context"
 	"fmt"
@@ -59,12 +59,9 @@ func startServer(server *http.Server) {
 
 func main() {
 	fx.New(
-		fx.Provide(
-			server.ProvideServer,
-			server.ProvideRoutes,
-			database.ProvideDatabase,
-		),
+		server.ProvideServers(),
 		books.ProvideBooks(),
+		authors.ProvideAuthors(),
 		fx.Invoke(
 			server.ProvideController,
 			startServer,

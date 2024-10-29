@@ -4,7 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ProvideBookRouter(routerGroup *gin.Engine) *gin.RouterGroup {
+type BookRoute struct {
+	route *gin.RouterGroup
+}
 
-	return routerGroup.Group("/books")
+func ProvideBookRouter(routerGroup *gin.Engine) BookRoute {
+
+	return BookRoute{
+		route: routerGroup.Group("/books"),
+	}
 }

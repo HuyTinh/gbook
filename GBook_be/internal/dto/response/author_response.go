@@ -11,5 +11,5 @@ type AuthorResponse struct {
 	Biography   string        `json:"biography"`
 	DateOfBirth time.Time     `json:"date_of_birth"`
 	Nationality string        `json:"nationality"`
-	Books       []models.Book `json:"Books"`
+	Books       []models.Book `json:"books"`
 }

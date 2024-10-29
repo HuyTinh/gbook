@@ -4,7 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ProvideAuthorRouter(routerGroup *gin.Engine) *gin.RouterGroup {
+type AuthorRoute struct {
+	route *gin.RouterGroup
+}
 
-	return routerGroup.Group("/authors")
+func ProvideAuthorRouter(routerGroup *gin.Engine) AuthorRoute {
+	return AuthorRoute{
+		route: routerGroup.Group("/authors"),
+	}
 }
