@@ -19,7 +19,7 @@ func ProvideAuthorService(bookRepository AuthorRepository) AuthorService {
 	}
 }
 
-func (bc *AuthorService) GetAllAuthors(c *gin.Context) {
+func (bc *AuthorService) GetAllAuthor(c *gin.Context) {
 
 	result, err := bc.repository.FindAllAuthor()
 
@@ -28,13 +28,25 @@ func (bc *AuthorService) GetAllAuthors(c *gin.Context) {
 		return
 	}
 
-	bookResponses := funk.Map(result, func(book models.Book) response.BookResponse {
-		var bookResponse response.BookResponse
-		copier.Copy(&bookResponse, &book)
-		return bookResponse
-	}).([]response.BookResponse)
+	authorResponses := funk.Map(result, func(author models.Author) response.AuthorResponse {
+		var authorResponse response.AuthorResponse
+		copier.Copy(&authorResponse, &author)
+		return authorResponse
+	}).([]response.AuthorResponse)
 
-	c.JSON(200, response.InitializeAPIResponse(1000, "", bookResponses))
+	c.JSON(200, response.InitializeAPIResponse(1000, "", authorResponses))
+}
+
+func (as *AuthorService) SaveAuthor(c *gin.Context) {
+
+	var saveAuthor models.Author
+
+	if err := c.ShouldBindJSON(&saveAuthor); err != nil {
+		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		return
+	}
+	as.repository.SaveAuthor(saveAuthor)
+	c.JSON(200, response.InitializeAPIResponse(1000, "", ""))
 }
 
 // func (bc *BookService) GetBookById(c *gin.Context) {

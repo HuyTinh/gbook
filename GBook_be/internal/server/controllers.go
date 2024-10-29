@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.uber.org/fx"
 )
 
 type Route struct {
@@ -15,10 +16,14 @@ type Controller struct {
 	Routes      []Route
 }
 
-func ProvideController(controllers []Controller) {
-	// Ánh xạ phương thức HTTP tới các hàm xử lý tương ứng
+type ProvideControllerParams struct {
+	fx.In
+	Controllers []Controller `group:"controllers"`
+}
 
-	for _, controller := range controllers {
+func ProvideController(controllerParams ProvideControllerParams) {
+
+	for _, controller := range controllerParams.Controllers {
 		routerGroup := controller.RouterGroup
 
 		routes := controller.Routes

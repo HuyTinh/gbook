@@ -9,6 +9,8 @@ func ProvideBooks() fx.Option {
 		ProvideBookRepository,
 		ProvideBookService,
 		ProvideBookRouter,
-		ProvideBookController,
+		fx.Annotate(ProvideBookController,
+			fx.ResultTags(`group:"controllers"`),
+		),
 	)
 }

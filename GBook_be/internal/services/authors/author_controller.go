@@ -3,18 +3,21 @@ package authors
 import (
 	HTTPMethod "GBook_be/internal/enums"
 	"GBook_be/internal/server"
-
-	"github.com/gin-gonic/gin"
 )
 
-func ProvideBookController(service AuthorService, routerGroup *gin.RouterGroup) server.Controller {
+func ProvideAuthorController(service AuthorService, authorRoute AuthorRoute) server.Controller {
 	return server.Controller{
-		RouterGroup: routerGroup,
+		RouterGroup: authorRoute.route,
 		Routes: []server.Route{
 			{
 				Method:     HTTPMethod.GET,
 				Path:       "",
-				Controller: service.GetAllAuthors,
+				Controller: service.GetAllAuthor,
+			},
+			{
+				Method:     HTTPMethod.POST,
+				Path:       "",
+				Controller: service.SaveAuthor,
 			},
 		},
 	}

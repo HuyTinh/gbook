@@ -19,9 +19,9 @@ func ProvideBookService(bookRepository BookRepository) BookService {
 	}
 }
 
-func (bc *BookService) GetAllBooks(c *gin.Context) {
+func (bs *BookService) GetAllBooks(c *gin.Context) {
 
-	result, err := bc.repository.FindAllBook()
+	result, err := bs.repository.FindAllBook()
 
 	if err != nil {
 		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
@@ -35,6 +35,18 @@ func (bc *BookService) GetAllBooks(c *gin.Context) {
 	}).([]response.BookResponse)
 
 	c.JSON(200, response.InitializeAPIResponse(1000, "", bookResponses))
+}
+
+func (bs *BookService) SaveBook(c *gin.Context) {
+
+	var saveBook models.Book
+
+	if err := c.ShouldBindJSON(&saveBook); err != nil {
+		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		return
+	}
+	bs.repository.SaveBook(saveBook)
+	c.JSON(200, response.InitializeAPIResponse(1000, "", ""))
 }
 
 // func (bc *BookService) GetBookById(c *gin.Context) {
