@@ -14,7 +14,7 @@ type (
 
 		// FindBookBySlug(bookSlug string)
 
-		SaveBook(saveBook models.Book)
+		SaveBook(saveBook models.Book) (models.Book, error)
 
 		// UpdateBook(bookId int64, updateBook models.Book)
 
@@ -25,6 +25,12 @@ type (
 		db *gorm.DB
 	}
 )
+
+func ProvideBookRepository(db *gorm.DB) BookRepository {
+	return &BookRepositoryImpl{
+		db: db,
+	}
+}
 
 func (br BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
 	var books []models.Book
@@ -37,20 +43,17 @@ func (br BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
 
 }
 
-func (br BookRepositoryImpl) SaveBook(saveBook models.Book) {
+func (br BookRepositoryImpl) SaveBook(saveBook models.Book) (models.Book, error) {
 
 	var book models.Book
+
 	if err := br.db.Find(&book, saveBook.ID).Error; err != nil {
-		return
+		return models.Book{}, err
 	}
 
 	if err := br.db.Create(&saveBook).Error; err != nil {
-		return
+		return models.Book{}, err
 	}
-}
 
-func ProvideBookRepository(db *gorm.DB) BookRepository {
-	return &BookRepositoryImpl{
-		db: db,
-	}
+	return book, nil
 }

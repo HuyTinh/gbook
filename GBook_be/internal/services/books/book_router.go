@@ -13,4 +13,5 @@ func ProvideBookRouter(routerGroup *gin.Engine) BookRoute {
 	return BookRoute{
 		route: routerGroup.Group("/books"),
 	}
+
 }

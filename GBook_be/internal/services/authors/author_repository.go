@@ -14,7 +14,7 @@ type (
 
 		// FindBookBySlug(bookSlug string)
 
-		SaveAuthor(newAuthor models.Author)
+		SaveAuthor(newAuthor models.Author) (models.Author, error)
 
 		// UpdateBook(bookId int64, updateBook models.Book)
 
@@ -25,6 +25,12 @@ type (
 		db *gorm.DB
 	}
 )
+
+func ProvideAuthorRepository(db *gorm.DB) AuthorRepository {
+	return &AuthorRepositoryImpl{
+		db: db,
+	}
+}
 
 func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 	var authors []models.Author
@@ -37,20 +43,16 @@ func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 
 }
 
-func (ar AuthorRepositoryImpl) SaveAuthor(saveAuthor models.Author) {
+func (ar AuthorRepositoryImpl) SaveAuthor(saveAuthor models.Author) (models.Author, error) {
 
 	var author models.Author
 	if err := ar.db.Find(&author, saveAuthor.ID).Error; err != nil {
-		return
+		return models.Author{}, err
 	}
 
 	if err := ar.db.Create(&saveAuthor).Error; err != nil {
-		return
+		return models.Author{}, err
 	}
-}
 
-func ProvideAuthorRepository(db *gorm.DB) AuthorRepository {
-	return &AuthorRepositoryImpl{
-		db: db,
-	}
+	return author, nil
 }

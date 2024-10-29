@@ -9,7 +9,9 @@ type AuthorRoute struct {
 }
 
 func ProvideAuthorRouter(routerGroup *gin.Engine) AuthorRoute {
+
 	return AuthorRoute{
 		route: routerGroup.Group("/authors"),
 	}
+
 }
