@@ -1,7 +1,7 @@
 package books
 
 import (
-	response "GBook_be/internal/dto/response"
+	APIResponse "GBook_be/internal/dto/response"
 	"GBook_be/internal/models"
 
 	"github.com/gin-gonic/gin"
@@ -19,22 +19,22 @@ func ProvideBookService(bookRepository BookRepository) BookService {
 	}
 }
 
-func (bs *BookService) GetAllBooks(c *gin.Context) {
+func (bs *BookService) GetAllBook(c *gin.Context) {
 
 	result, err := bs.repository.FindAllBook()
 
 	if err != nil {
-		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		c.JSON(400, APIResponse.InitializeAPIResponse(400, err.Error(), ""))
 		return
 	}
 
-	bookResponses := funk.Map(result, func(book models.Book) response.BookResponse {
-		var bookResponse response.BookResponse
+	bookResponses := funk.Map(result, func(book models.Book) APIResponse.BookResponse {
+		var bookResponse APIResponse.BookResponse
 		copier.Copy(&bookResponse, &book)
 		return bookResponse
-	}).([]response.BookResponse)
+	}).([]APIResponse.BookResponse)
 
-	c.JSON(200, response.InitializeAPIResponse(1000, "", bookResponses))
+	c.JSON(200, APIResponse.InitializeAPIResponse(1000, "", bookResponses))
 }
 
 func (bs *BookService) SaveBook(c *gin.Context) {
@@ -42,66 +42,16 @@ func (bs *BookService) SaveBook(c *gin.Context) {
 	var saveBook models.Book
 
 	if err := c.ShouldBindJSON(&saveBook); err != nil {
-		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
+		c.JSON(400, APIResponse.InitializeAPIResponse(400, err.Error(), ""))
 		return
 	}
-	bs.repository.SaveBook(saveBook)
-	c.JSON(200, response.InitializeAPIResponse(1000, "", ""))
+
+	successSaveBook, err := bs.repository.SaveBook(saveBook)
+
+	if err != nil {
+		c.JSON(400, APIResponse.InitializeAPIResponse(400, err.Error(), ""))
+		return
+	}
+
+	c.JSON(200, APIResponse.InitializeAPIResponse(1000, "", successSaveBook))
 }
-
-// func (bc *BookService) GetBookById(c *gin.Context) {
-
-// 	var book models.Book
-
-// 	if result := bc.db.Preload("Author").First(&book, c.Param("id")); result.Error != nil {
-// 		c.JSON(400, response.InitializeAPIResponse(400, fmt.Sprintf("Book with id = %s is not found", c.Param("id")), ""))
-// 		return
-// 	}
-
-// 	var bookResponse response.BookResponse
-
-// 	_ = copier.Copy(&bookResponse, &book)
-
-// 	c.JSON(200, response.InitializeAPIResponse(1000, "", bookResponse))
-// }
-
-// func (bc *BookService) CreateBook(c *gin.Context) {
-
-// 	var newBook models.Book
-
-// 	if err := c.ShouldBindJSON(&newBook); err != nil {
-// 		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
-// 		return
-// 	}
-
-// 	var author models.Author
-// 	if err := bc.db.Find(&author, newBook.AuthorID).Error; err != nil {
-// 		c.JSON(500, response.InitializeAPIResponse(500, "Author not found", ""))
-// 		return
-// 	}
-
-// 	if err := bc.db.Create(&newBook).Error; err != nil {
-// 		c.JSON(500, response.InitializeAPIResponse(500, "Failed to create book", ""))
-// 		return
-// 	}
-
-// 	c.JSON(200, response.InitializeAPIResponse(1000, "", newBook))
-// }
-
-// func (bc *BookService) UpdateBook(c *gin.Context) {
-
-// 	var updateBook models.Book
-
-// 	if err := c.ShouldBindJSON(&updateBook); err != nil {
-// 		c.JSON(400, response.InitializeAPIResponse(400, "Invalid input", ""))
-// 		return
-// 	}
-
-// 	if err := bc.db.Updates(&updateBook); err != nil {
-// 		c.JSON(500, response.InitializeAPIResponse(500, "Failed to update book", ""))
-// 		return
-// 	}
-
-// 	c.JSON(200, response.InitializeAPIResponse(200, "", updateBook))
-
-// }

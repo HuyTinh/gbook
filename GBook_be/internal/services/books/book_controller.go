@@ -12,7 +12,7 @@ func ProvideBookController(service BookService, bookRoute BookRoute) server.Cont
 			{
 				Method:     HTTPMethod.GET,
 				Path:       "",
-				Controller: service.GetAllBooks,
+				Controller: service.GetAllBook,
 			},
 			{
 				Method:     HTTPMethod.POST,
