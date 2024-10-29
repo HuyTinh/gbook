@@ -1,6 +1,9 @@
 package main
 
 import (
+	"GBook_be/internal/database"
+	"GBook_be/internal/server"
+	"GBook_be/internal/services/books"
 	"context"
 	"fmt"
 	"log"
@@ -9,7 +12,7 @@ import (
 	"syscall"
 	"time"
 
-	"GBook_be/internal/server"
+	"go.uber.org/fx"
 )
 
 func gracefulShutdown(apiServer *http.Server, done chan bool) {
@@ -36,9 +39,7 @@ func gracefulShutdown(apiServer *http.Server, done chan bool) {
 	done <- true
 }
 
-func main() {
-
-	server := server.NewServer()
+func startServer(server *http.Server) {
 
 	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
@@ -54,4 +55,19 @@ func main() {
 	// Wait for the graceful shutdown to complete
 	<-done
 	log.Println("Graceful shutdown complete.")
+}
+
+func main() {
+	fx.New(
+		fx.Provide(
+			server.ProvideServer,
+			server.ProvideRoutes,
+			database.ProvideDatabase,
+		),
+		books.ProvideBooks(),
+		fx.Invoke(
+			server.ProvideController,
+			startServer,
+		),
+	).Run()
 }

@@ -1,15 +1,11 @@
 package server
 
 import (
-	"GBook_be/internal/database"
-	"GBook_be/internal/routes"
-	"net/http"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-func (s *Server) RegisterRoutes() http.Handler {
+func ProvideRoutes() *gin.Engine {
 	r := gin.Default()
 
 	// Configure CORS
@@ -21,11 +17,6 @@ func (s *Server) RegisterRoutes() http.Handler {
 		AllowCredentials: true,
 		MaxAge:           12 * 3600, // Cache preflight response for 12 hours
 	}))
-
-	// Initialize database
-	db := database.DB
-
-	routes.RegisterBookRouter(r, db)
 
 	return r
 }

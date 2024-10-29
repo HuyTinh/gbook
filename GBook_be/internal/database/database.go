@@ -3,7 +3,6 @@ package database
 import (
 	"GBook_be/internal/models"
 	"context"
-	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -25,18 +24,12 @@ type Service interface {
 	Close() error
 }
 
-type service struct {
-	db *sql.DB
-}
-
 var (
 	dbname     = os.Getenv("GOBOOK_DB_DATABASE")
-	dbInstance *service
+	dbInstance *gorm.DB
 )
 
-var DB *gorm.DB
-
-func New() Service {
+func ProvideDatabase() *gorm.DB {
 	// Reuse Connection
 
 	var err error
@@ -45,7 +38,7 @@ func New() Service {
 		return dbInstance
 	}
 
-	DB, err = gorm.Open(sqlite.Open(fmt.Sprintf("%s.db", dbname)), &gorm.Config{})
+	gormDB, err := gorm.Open(sqlite.Open(fmt.Sprintf("%s.db", dbname)), &gorm.Config{})
 
 	if err != nil {
 		// This will not be a connection error, but a DSN parse error or
@@ -54,7 +47,7 @@ func New() Service {
 	}
 
 	// auto create and update table
-	error := autoMigrate(DB)
+	error := autoMigrate(gormDB)
 
 	if error != nil {
 		// This will not be a connection error, but a DSN parse error or
@@ -62,7 +55,7 @@ func New() Service {
 		log.Fatal("Cannot create table ", error)
 	}
 
-	sqlDB, err := DB.DB()
+	sqlDB, err := gormDB.DB()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -71,22 +64,23 @@ func New() Service {
 	sqlDB.SetMaxOpenConns(100)
 	sqlDB.SetConnMaxLifetime(time.Hour)
 
-	dbInstance = &service{
-		db: sqlDB,
-	}
-	return dbInstance
+	dbInstance = gormDB
+
+	return gormDB
 }
 
 // Health checks the health of the database connection by pinging the database.
 // It returns a map with keys indicating various health statistics.
-func (s *service) Health() map[string]string {
+func Health() map[string]string {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
 	stats := make(map[string]string)
 
+	sqlDB, _ := dbInstance.DB()
+
 	// Ping the database
-	err := s.db.PingContext(ctx)
+	err := sqlDB.PingContext(ctx)
 	if err != nil {
 		stats["status"] = "down"
 		stats["error"] = fmt.Sprintf("db down: %v", err)
@@ -99,7 +93,7 @@ func (s *service) Health() map[string]string {
 	stats["message"] = "It's healthy"
 
 	// Get database stats (like open connections, in use, idle, etc.)
-	dbStats := s.db.Stats()
+	dbStats := sqlDB.Stats()
 	stats["open_connections"] = strconv.Itoa(dbStats.OpenConnections)
 	stats["in_use"] = strconv.Itoa(dbStats.InUse)
 	stats["idle"] = strconv.Itoa(dbStats.Idle)
@@ -149,7 +143,8 @@ func autoMigrate(db *gorm.DB) error {
 // It logs a message indicating the disconnection from the specific database.
 // If the connection is successfully closed, it returns nil.
 // If an error occurs while closing the connection, it returns the error.
-func (s *service) Close() error {
+func Close() error {
+	sqlDB, _ := dbInstance.DB()
 	log.Printf("Disconnected from database: %s", dbname)
-	return s.db.Close()
+	return sqlDB.Close()
 }

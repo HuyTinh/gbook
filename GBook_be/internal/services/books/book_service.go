@@ -1,9 +1,8 @@
-package services
+package books
 
 import (
 	response "GBook_be/internal/dto/response"
 	"GBook_be/internal/models"
-	"GBook_be/internal/repositories"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
@@ -11,11 +10,11 @@ import (
 )
 
 type BookService struct {
-	repository repositories.BookRepository
+	repository BookRepository
 }
 
-func InitializeBookService(bookRepository repositories.BookRepository) *BookService {
-	return &BookService{
+func ProvideBookService(bookRepository BookRepository) BookService {
+	return BookService{
 		repository: bookRepository,
 	}
 }

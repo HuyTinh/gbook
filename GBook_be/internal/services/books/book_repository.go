@@ -1,4 +1,4 @@
-package repositories
+package books
 
 import (
 	"GBook_be/internal/models"
