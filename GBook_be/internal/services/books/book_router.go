@@ -1,6 +1,8 @@
 package books
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +13,7 @@ type BookRoute struct {
 func ProvideBookRouter(routerGroup *gin.Engine) BookRoute {
 
 	return BookRoute{
-		route: routerGroup.Group("/books"),
+		route: routerGroup.Group(os.Getenv("BOOK_END_POINT")),
 	}
 
 }

@@ -1,6 +1,8 @@
 package authors
 
 import (
+	"os"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -11,7 +13,7 @@ type AuthorRoute struct {
 func ProvideAuthorRouter(routerGroup *gin.Engine) AuthorRoute {
 
 	return AuthorRoute{
-		route: routerGroup.Group("/authors"),
+		route: routerGroup.Group(os.Getenv("AUTHOR_END_POINT")),
 	}
 
 }
