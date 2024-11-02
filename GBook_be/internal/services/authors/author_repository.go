@@ -10,15 +10,15 @@ type (
 	AuthorRepository interface {
 		FindAllAuthor() ([]models.Author, error)
 
-		// FindBookById(bookId int64)
+		FindAuthorById(authorId int64) (models.Author, error)
 
-		// FindBookBySlug(bookSlug string)
+		FindAuthorByName(authorName string) (models.Author, error)
 
 		SaveAuthor(newAuthor models.Author) (models.Author, error)
 
-		// UpdateBook(bookId int64, updateBook models.Book)
+		// UpdateAuthor(authorId int64, updateAuthor models.Author)
 
-		// DeleteBook(bookId int64)
+		// DeleteAuthor(authorId int64)
 	}
 
 	AuthorRepositoryImpl struct {
@@ -34,18 +34,39 @@ func ProvideAuthorRepository(db *gorm.DB) AuthorRepository {
 
 func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 	var authors []models.Author
-	result := ar.db.Preload("Books").Find(&authors)
-	if result.Error != nil {
-		return nil, result.Error
+
+	if err := ar.db.Preload("Books").Find(&authors).Error; err != nil {
+		return nil, err
 	}
 
 	return authors, nil
 
 }
 
+func (ar AuthorRepositoryImpl) FindAuthorById(authorId int64) (models.Author, error) {
+	var author models.Author
+
+	if err := ar.db.Preload("Books").Find(&author, authorId).Error; err != nil {
+		return models.Author{}, err
+	}
+
+	return author, nil
+}
+
+func (ar AuthorRepositoryImpl) FindAuthorByName(authorName string) (models.Author, error) {
+	var author models.Author
+
+	if err := ar.db.Preload("Books").Where("name = ?", authorName).First(&author).Error; err != nil {
+		return models.Author{}, err
+	}
+
+	return author, nil
+}
+
 func (ar AuthorRepositoryImpl) SaveAuthor(saveAuthor models.Author) (models.Author, error) {
 
 	var author models.Author
+
 	if err := ar.db.Find(&author, saveAuthor.ID).Error; err != nil {
 		return models.Author{}, err
 	}
