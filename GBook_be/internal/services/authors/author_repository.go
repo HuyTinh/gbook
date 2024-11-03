@@ -2,6 +2,8 @@ package authors
 
 import (
 	"GBook_be/internal/models"
+	"fmt"
+	"sync"
 
 	"gorm.io/gorm"
 )
@@ -33,11 +35,47 @@ func ProvideAuthorRepository(db *gorm.DB) AuthorRepository {
 }
 
 func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
-	var authors []models.Author
-
-	if err := ar.db.Preload("Books").Find(&authors).Error; err != nil {
-		return nil, err
+	batchSize := 8000
+	if batchSize <= 0 {
+		return nil, fmt.Errorf("batch size must be greater than zero")
 	}
+
+	var authors []models.Author
+	offset := 0
+	var wg sync.WaitGroup
+	results := make(chan []models.Author)
+	done := make(chan struct{})
+
+	go func() {
+		for {
+			batch := make([]models.Author, 0, batchSize)
+			if err := ar.db.Preload("Books").Limit(batchSize).Offset(offset).Find(&batch).Error; err != nil {
+				// Handle error (could send to a channel or log it)
+				close(done)
+				return
+			}
+
+			if len(batch) == 0 {
+				break // Exit if no more authors
+			}
+
+			results <- batch // Send the batch to the results channel
+			offset += batchSize
+		}
+		close(results) // Close the results channel when done
+	}()
+
+	// Collect results
+	go func() {
+		for batch := range results {
+			authors = append(authors, batch...) // Append the batch to the authors slice
+		}
+		close(done)
+	}()
+
+	// Wait for all batches to be processed
+	wg.Wait()
+	<-done // Wait for the results to finish
 
 	return authors, nil
 

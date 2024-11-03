@@ -1,7 +1,7 @@
 package models
 
 type Customer struct {
-	ID          uint    `gorm:"primaryKey"`
+	ID          uint    `gorm:"primaryKey;autoIncrement"`
 	FirstName   string  `gorm:"size:100;not null"`
 	LastName    string  `gorm:"size:100;not null"`
 	Email       string  `gorm:"size:255;unique"`

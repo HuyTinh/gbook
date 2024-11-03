@@ -1,7 +1,7 @@
 package models
 
 type Supplier struct {
-	ID            uint           `gorm:"primaryKey"`
+	ID            uint           `gorm:"primaryKey;autoIncrement"`
 	SupplierName  string         `gorm:"size:255;not null"`
 	ContactName   string         `gorm:"size:255"`
 	Address       string         `gorm:"type:text"`
