@@ -35,7 +35,7 @@ func ProvideAuthorRepository(db *gorm.DB) AuthorRepository {
 }
 
 func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
-	batchSize := 8000
+	batchSize := 1024
 	if batchSize <= 0 {
 		return nil, fmt.Errorf("batch size must be greater than zero")
 	}
@@ -78,7 +78,6 @@ func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 	<-done // Wait for the results to finish
 
 	return authors, nil
-
 }
 
 func (ar AuthorRepositoryImpl) FindAuthorById(authorId int64) (models.Author, error) {
