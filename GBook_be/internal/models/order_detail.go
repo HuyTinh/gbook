@@ -1,7 +1,7 @@
 package models
 
 type OrderDetail struct {
-	ID       uint `gorm:"primaryKey"`
+	ID       uint `gorm:"primaryKey;autoIncrement"`
 	OrderID  uint
 	BookID   uint
 	Quantity int     `gorm:"not null"`

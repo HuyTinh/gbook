@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Review struct {
-	ID         uint `gorm:"primaryKey"`
+	ID         uint `gorm:"primaryKey;autoIncrement"`
 	BookID     uint
 	CustomerID uint
 	Rating     int       `gorm:"check:rating>=1 AND rating<=5"`

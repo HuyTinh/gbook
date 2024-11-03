@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Book struct {
-	ID            uint   `gorm:"primaryKey"`
+	ID            uint   `gorm:"primaryKey;autoIncrement"`
 	Name          string `gorm:"size:255;not null"`
 	Slug          string `gorm:"size:255;not null"`
 	AuthorID      uint   `gorm:"not null"`

@@ -3,7 +3,7 @@ package models
 import "time"
 
 type Payement struct {
-	ID            uint `gorm:"primaryKey"`
+	ID            uint `gorm:"primaryKey;autoIncrement"`
 	OrderID       uint
 	PaymentDate   time.Time `gorm:"default:CURRENT_TIMESTAMP"`
 	Amount        float64   `gorm:"not null"`

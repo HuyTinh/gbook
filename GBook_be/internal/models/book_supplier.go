@@ -3,7 +3,7 @@ package models
 import "time"
 
 type BookSupplier struct {
-	ID          uint `gorm:"primaryKey"`
+	ID          uint `gorm:"primaryKey;autoIncrement"`
 	BookID      uint
 	SupplierID  uint
 	SupplyPrice float64   `gorm:"not null"`
