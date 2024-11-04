@@ -18,20 +18,19 @@ func ProvideAuthorService(bookRepository AuthorRepository) AuthorService {
 }
 
 func (bc *AuthorService) GetAllAuthor(c *gin.Context) {
-	// Gọi tìm tất cả tác giả với các trường cần thiết
-	result, err := bc.repository.FindAllAuthor() // Giả sử bạn đã tạo phương thức này
+
+	result, err := bc.repository.FindAllAuthor()
+
 	if err != nil {
 		c.JSON(500, APIResponse.InitializeAPIResponse(500, "Error fetching authors: "+err.Error(), ""))
 		return
 	}
 
-	// Kiểm tra nếu không có tác giả nào
 	if len(result) == 0 {
 		c.JSON(200, APIResponse.InitializeAPIResponse(200, "No authors found", ""))
 		return
 	}
 
-	// Khởi tạo channel để nhận kết quả
 	authorResponsesChan := make(chan APIResponse.AuthorResponse)
 	done := make(chan bool)
 
@@ -44,6 +43,7 @@ func (bc *AuthorService) GetAllAuthor(c *gin.Context) {
 				Biography:   author.Biography,
 				DateOfBirth: author.DateOfBirth,
 				Nationality: author.Nationality,
+				Books:       author.Books,
 				// Thêm các trường khác nếu cần
 			}
 			authorResponsesChan <- authorResponse // Gửi kết quả vào channel

@@ -8,5 +8,5 @@ type Author struct {
 	Biography   string    `gorm:"type:text"`
 	DateOfBirth time.Time `gorm:"type:datetime"`
 	Nationality string    `gorm:"size:100"`
-	Books       []Book    `gorm:"foreignKey:AuthorID"`
+	Books       []Book    `gorm:"foreignKey:AuthorID" json:"-"`
 }
