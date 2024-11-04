@@ -2,7 +2,6 @@ package authors
 
 import (
 	"GBook_be/internal/models"
-	"fmt"
 	"sync"
 
 	"gorm.io/gorm"
@@ -35,10 +34,7 @@ func ProvideAuthorRepository(db *gorm.DB) AuthorRepository {
 }
 
 func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
-	batchSize := 1024
-	if batchSize <= 0 {
-		return nil, fmt.Errorf("batch size must be greater than zero")
-	}
+	batchSize := 512 * 3
 
 	var authors []models.Author
 	offset := 0
@@ -50,7 +46,6 @@ func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 		for {
 			batch := make([]models.Author, 0, batchSize)
 			if err := ar.db.Preload("Books").Limit(batchSize).Offset(offset).Find(&batch).Error; err != nil {
-				// Handle error (could send to a channel or log it)
 				close(done)
 				return
 			}
@@ -59,16 +54,15 @@ func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 				break // Exit if no more authors
 			}
 
-			results <- batch // Send the batch to the results channel
+			results <- batch
 			offset += batchSize
 		}
-		close(results) // Close the results channel when done
+		close(results)
 	}()
 
-	// Collect results
 	go func() {
 		for batch := range results {
-			authors = append(authors, batch...) // Append the batch to the authors slice
+			authors = append(authors, batch...)
 		}
 		close(done)
 	}()

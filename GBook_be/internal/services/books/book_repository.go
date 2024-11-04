@@ -4,6 +4,7 @@ import (
 	"GBook_be/internal/models"
 	"errors"
 	"fmt"
+	"sync"
 
 	"gorm.io/gorm"
 )
@@ -35,14 +36,44 @@ func ProvideBookRepository(db *gorm.DB) BookRepository {
 }
 
 func (br BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
+	batchSize := 512 * 3
+	offset := 0
+
 	var books []models.Book
-	result := br.db.Preload("Author").Find(&books)
-	if result.Error != nil {
-		return nil, result.Error
-	}
+	var wg sync.WaitGroup
+
+	results := make(chan []models.Book)
+	done := make(chan struct{})
+
+	go func() {
+		for {
+			batch := make([]models.Book, 0, batchSize)
+			if err := br.db.Preload("Author").Limit(batchSize).Offset(offset).Find(&batch).Error; err != nil {
+				close(done)
+				return
+			}
+
+			if len(batch) == 0 {
+				break
+			}
+
+			results <- batch
+			offset += batchSize
+		}
+		close(results)
+	}()
+
+	go func() {
+		for batch := range results {
+			books = append(books, batch...)
+		}
+		close(done)
+	}()
+
+	wg.Wait()
+	<-done
 
 	return books, nil
-
 }
 
 func (br BookRepositoryImpl) SaveBook(saveBook models.Book) (models.Book, error) {
