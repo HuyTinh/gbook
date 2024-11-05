@@ -9,49 +9,52 @@ import (
 	"strconv"
 	"time"
 
-	sqlite "github.com/glebarez/sqlite"
-	"gorm.io/gorm"
+	sqlite "github.com/glebarez/sqlite" // Sử dụng gói sqlite để làm việc với cơ sở dữ liệu SQLite
+	"gorm.io/gorm"                      // Gói GORM để tương tác với cơ sở dữ liệu
 )
 
-// Service represents a service that interacts with a database.
+// Service định nghĩa một dịch vụ tương tác với cơ sở dữ liệu.
 type Service interface {
-	// Health returns a map of health status information.
-	// The keys and values in the map are service-specific.
+	// Health trả về một bản đồ chứa thông tin trạng thái sức khỏe.
+	// Các khóa và giá trị trong bản đồ là riêng cho dịch vụ.
 	Health() map[string]string
 
-	// Close terminates the database connection.
-	// It returns an error if the connection cannot be closed.
+	// Close kết thúc kết nối đến cơ sở dữ liệu.
+	// Nó trả về lỗi nếu không thể đóng kết nối.
 	Close() error
 }
 
 var (
-	dbname     = os.Getenv("GOBOOK_DB_DATABASE")
-	dbInstance *gorm.DB
+	dbname     = os.Getenv("GOBOOK_DB_DATABASE") // Lấy tên cơ sở dữ liệu từ biến môi trường
+	dbInstance *gorm.DB                          // Biến toàn cục để lưu trữ kết nối cơ sở dữ liệu
 )
 
+// ProvideDatabase cung cấp kết nối đến cơ sở dữ liệu.
 func ProvideDatabase() *gorm.DB {
-	// Reuse Connection
+	// Tái sử dụng kết nối
 
 	var err error
 
+	// Kiểm tra xem kết nối đã tồn tại chưa
 	if dbInstance != nil {
-		return dbInstance
+		return dbInstance // Trả về kết nối hiện tại nếu đã tồn tại
 	}
 
+	// Mở kết nối mới đến cơ sở dữ liệu SQLite
 	gormDB, err := gorm.Open(sqlite.Open(fmt.Sprintf("%s.db", dbname)), &gorm.Config{})
 
 	if err != nil {
-		// This will not be a connection error, but a DSN parse error or
-		// another initialization error.
+		// Đây sẽ không phải là lỗi kết nối, mà là lỗi phân tích DSN hoặc
+		// một lỗi khởi tạo khác.
 		log.Fatal(err)
 	}
 
-	// auto create and update table
+	// Tự động tạo và cập nhật bảng
 	error := autoMigrate(gormDB)
 
 	if error != nil {
-		// This will not be a connection error, but a DSN parse error or
-		// another initialization error.
+		// Đây sẽ không phải là lỗi kết nối, mà là lỗi phân tích DSN hoặc
+		// một lỗi khởi tạo khác.
 		log.Fatal("Cannot create table ", error)
 	}
 
@@ -60,39 +63,39 @@ func ProvideDatabase() *gorm.DB {
 		log.Fatal(err)
 	}
 
-	sqlDB.SetMaxIdleConns(10)
-	sqlDB.SetMaxOpenConns(100)
-	sqlDB.SetConnMaxLifetime(time.Hour)
+	// Cấu hình kết nối
+	sqlDB.SetMaxIdleConns(10)           // Số kết nối nhàn rỗi tối đa
+	sqlDB.SetMaxOpenConns(100)          // Số kết nối tối đa
+	sqlDB.SetConnMaxLifetime(time.Hour) // Thời gian tối đa cho một kết nối
 
-	dbInstance = gormDB
+	dbInstance = gormDB // Lưu kết nối vào biến toàn cục
 
-	return gormDB
+	return gormDB // Trả về kết nối cơ sở dữ liệu
 }
 
-// Health checks the health of the database connection by pinging the database.
-// It returns a map with keys indicating various health statistics.
+// Health kiểm tra sức khỏe của kết nối cơ sở dữ liệu bằng cách ping vào cơ sở dữ liệu.
+// Nó trả về một bản đồ với các khóa cho biết các thông số sức khỏe khác nhau.
 func Health() map[string]string {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 
 	stats := make(map[string]string)
 
-	sqlDB, _ := dbInstance.DB()
+	sqlDB, _ := dbInstance.DB() // Lấy đối tượng sql.DB từ GORM
 
-	// Ping the database
+	// Ping vào cơ sở dữ liệu
 	err := sqlDB.PingContext(ctx)
 	if err != nil {
 		stats["status"] = "down"
 		stats["error"] = fmt.Sprintf("db down: %v", err)
-		log.Fatalf(fmt.Sprintf("db down: %v", err)) // Log the error and terminate the program
 		return stats
 	}
 
-	// Database is up, add more statistics
+	// Cơ sở dữ liệu đang hoạt động, thêm nhiều thông số
 	stats["status"] = "up"
 	stats["message"] = "It's healthy"
 
-	// Get database stats (like open connections, in use, idle, etc.)
+	// Lấy thống kê cơ sở dữ liệu (như kết nối mở, đang sử dụng, nhàn rỗi, v.v.)
 	dbStats := sqlDB.Stats()
 	stats["open_connections"] = strconv.Itoa(dbStats.OpenConnections)
 	stats["in_use"] = strconv.Itoa(dbStats.InUse)
@@ -102,8 +105,8 @@ func Health() map[string]string {
 	stats["max_idle_closed"] = strconv.FormatInt(dbStats.MaxIdleClosed, 10)
 	stats["max_lifetime_closed"] = strconv.FormatInt(dbStats.MaxLifetimeClosed, 10)
 
-	// Evaluate stats to provide a health message
-	if dbStats.OpenConnections > 40 { // Assuming 50 is the max for this example
+	// Đánh giá thống kê để cung cấp thông điệp sức khỏe
+	if dbStats.OpenConnections > 40 { // Giả sử 50 là tối đa cho ví dụ này
 		stats["message"] = "The database is experiencing heavy load."
 	}
 	if dbStats.WaitCount > 1000 {
@@ -123,6 +126,7 @@ func Health() map[string]string {
 
 // Hàm tự động gọi AutoMigrate cho tất cả các model
 func autoMigrate(db *gorm.DB) error {
+	// Tự động tạo bảng cho các mô hình
 	error := db.AutoMigrate(
 		&models.Book{},
 		&models.Author{},
@@ -130,19 +134,19 @@ func autoMigrate(db *gorm.DB) error {
 		&models.Genre{},
 		&models.Order{},
 		&models.OrderDetail{},
-		&models.Payement{},
+		&models.Payment{},
 		&models.Review{},
 	)
 
-	return error
+	return error // Trả về lỗi nếu có
 }
 
-// Close closes the database connection.
-// It logs a message indicating the disconnection from the specific database.
-// If the connection is successfully closed, it returns nil.
-// If an error occurs while closing the connection, it returns the error.
+// Close đóng kết nối cơ sở dữ liệu.
+// Nó ghi lại một thông điệp chỉ ra việc ngắt kết nối khỏi cơ sở dữ liệu cụ thể.
+// Nếu kết nối được đóng thành công, nó trả về nil.
+// Nếu có lỗi xảy ra khi đóng kết nối, nó trả về lỗi.
 func Close() error {
-	sqlDB, _ := dbInstance.DB()
-	log.Printf("Disconnected from database: %s", dbname)
-	return sqlDB.Close()
+	sqlDB, _ := dbInstance.DB()                          // Lấy đối tượng sql.DB từ GORM
+	log.Printf("Disconnected from database: %s", dbname) // Ghi lại thông điệp ngắt kết nối
+	return sqlDB.Close()                                 // Đóng kết nối
 }
