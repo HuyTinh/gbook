@@ -8,8 +8,7 @@
     "strict": true,
     "noEmit": true,
     "noUncheckedSideEffectImports": true,
-    "declaration": true,
-    "emitDeclarationMetadata": true
+    "declaration": true
   },
   "include": ["vite.config.ts"]
 }
