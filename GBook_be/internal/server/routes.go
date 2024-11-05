@@ -1,22 +1,23 @@
 package server
 
 import (
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors" // Nhập gói cors để cấu hình CORS cho ứng dụng
+	"github.com/gin-gonic/gin"    // Nhập gói gin để xây dựng ứng dụng web
 )
 
+// ProvideRoutes cung cấp một đối tượng gin.Engine với các route đã được cấu hình.
 func ProvideRoutes() *gin.Engine {
-	r := gin.Default()
+	r := gin.Default() // Khởi tạo một đối tượng gin.Engine với cấu hình mặc định
 
-	// Configure CORS
+	// Cấu hình CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},                      // Allow specific origins
-		AllowMethods:     []string{"GET", "POST", "OPTIONS"}, // Allow specific methods
-		AllowHeaders:     []string{"Origin", "Content-Type"}, // Allow specific headers
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * 3600, // Cache preflight response for 12 hours
+		AllowOrigins:     []string{"*"},                      // Cho phép tất cả các nguồn gốc (origins)
+		AllowMethods:     []string{"GET", "POST", "OPTIONS"}, // Cho phép các phương thức GET, POST và OPTIONS
+		AllowHeaders:     []string{"Origin", "Content-Type"}, // Cho phép các header: Origin và Content-Type
+		ExposeHeaders:    []string{"Content-Length"},         // Các header sẽ được tiết lộ cho client
+		AllowCredentials: true,                               // Cho phép gửi cookie trong các yêu cầu
+		MaxAge:           12 * 3600,                          // Lưu cache phản hồi preflight trong 12 giờ
 	}))
 
-	return r
+	return r // Trả về đối tượng gin.Engine đã được cấu hình
 }
