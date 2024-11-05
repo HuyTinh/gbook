@@ -48,7 +48,7 @@ func (br BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
 	go func() {
 		for {
 			batch := make([]models.Book, 0, batchSize)
-			if err := br.db.Preload("Author").Limit(batchSize).Offset(offset).Find(&batch).Error; err != nil {
+			if err := br.db.Preload("Author").Preload("Genre").Limit(batchSize).Offset(offset).Find(&batch).Error; err != nil {
 				close(done)
 				return
 			}
