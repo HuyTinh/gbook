@@ -1,35 +1,33 @@
-<div align="left">
-    <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" width="40%" align="left" style="margin-right: 15px"/>
-    <div style="display: inline-block;">
-        <h2 style="display: inline-block; vertical-align: middle; margin-top: 0;">GBOOK</h2>
-        <p>
+<p align="center">
+    <img src="https://cdn-icons-png.flaticon.com/512/9913/9913632.png" align="center" width="30%">
+</p>
+<p align="center"><h1 align="center">GBOOK</h1></p>
+<p align="center">
 	<em><code>❯ REPLACE-ME</code></em>
 </p>
-        <p>
+<p align="center">
 	<!-- local repository, no metadata badges. --></p>
-        <p>Built with the tools and technologies:</p>
-        <p>
-	<img src="https://img.shields.io/badge/npm-CB3837.svg?style=flat-square&logo=npm&logoColor=white" alt="npm">
-	<img src="https://img.shields.io/badge/Autoprefixer-DD3735.svg?style=flat-square&logo=Autoprefixer&logoColor=white" alt="Autoprefixer">
-	<img src="https://img.shields.io/badge/CoffeeScript-2F2625.svg?style=flat-square&logo=CoffeeScript&logoColor=white" alt="CoffeeScript">
-	<img src="https://img.shields.io/badge/HTML5-E34F26.svg?style=flat-square&logo=HTML5&logoColor=white" alt="HTML5">
-	<img src="https://img.shields.io/badge/Svelte-FF3E00.svg?style=flat-square&logo=Svelte&logoColor=white" alt="Svelte">
-	<img src="https://img.shields.io/badge/esbuild-FFCF00.svg?style=flat-square&logo=esbuild&logoColor=black" alt="esbuild">
-	<img src="https://img.shields.io/badge/.ENV-ECD53F.svg?style=flat-square&logo=dotenv&logoColor=black" alt=".ENV">
+<p align="center">Built with the tools and technologies:</p>
+<p align="center">
+	<img src="https://img.shields.io/badge/npm-CB3837.svg?style=default&logo=npm&logoColor=white" alt="npm">
+	<img src="https://img.shields.io/badge/Autoprefixer-DD3735.svg?style=default&logo=Autoprefixer&logoColor=white" alt="Autoprefixer">
+	<img src="https://img.shields.io/badge/CoffeeScript-2F2625.svg?style=default&logo=CoffeeScript&logoColor=white" alt="CoffeeScript">
+	<img src="https://img.shields.io/badge/HTML5-E34F26.svg?style=default&logo=HTML5&logoColor=white" alt="HTML5">
+	<img src="https://img.shields.io/badge/Svelte-FF3E00.svg?style=default&logo=Svelte&logoColor=white" alt="Svelte">
+	<img src="https://img.shields.io/badge/esbuild-FFCF00.svg?style=default&logo=esbuild&logoColor=black" alt="esbuild">
+	<img src="https://img.shields.io/badge/.ENV-ECD53F.svg?style=default&logo=dotenv&logoColor=black" alt=".ENV">
 	<br>
-	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=flat-square&logo=JavaScript&logoColor=black" alt="JavaScript">
-	<img src="https://img.shields.io/badge/Go-00ADD8.svg?style=flat-square&logo=Go&logoColor=white" alt="Go">
-	<img src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style=flat-square&logo=Yarn&logoColor=white" alt="Yarn">
-	<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=flat-square&logo=Docker&logoColor=white" alt="Docker">
-	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat-square&logo=Python&logoColor=white" alt="Python">
-	<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=flat-square&logo=TypeScript&logoColor=white" alt="TypeScript">
-	<img src="https://img.shields.io/badge/PHP-777BB4.svg?style=flat-square&logo=PHP&logoColor=white" alt="PHP">
+	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=default&logo=JavaScript&logoColor=black" alt="JavaScript">
+	<img src="https://img.shields.io/badge/Go-00ADD8.svg?style=default&logo=Go&logoColor=white" alt="Go">
+	<img src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style=default&logo=Yarn&logoColor=white" alt="Yarn">
+	<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=default&logo=Docker&logoColor=white" alt="Docker">
+	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=default&logo=Python&logoColor=white" alt="Python">
+	<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=default&logo=TypeScript&logoColor=white" alt="TypeScript">
+	<img src="https://img.shields.io/badge/PHP-777BB4.svg?style=default&logo=PHP&logoColor=white" alt="PHP">
 </p>
-    </div>
-</div>
-<br clear="left"/>
+<br>
 
-<details><summary>Table of Contents</summary>
+## 🔗 Table of Contents
 
 - [📍 Overview](#-overview)
 - [👾 Features](#-features)
@@ -45,8 +43,7 @@
 - [🎗 License](#-license)
 - [🙌 Acknowledgments](#-acknowledgments)
 
-</details>
-<hr>
+---
 
 ## 📍 Overview
 
@@ -76,29 +73,30 @@
     │   ├── main.exe
     │   ├── Makefile
     │   ├── README.md
-    └── GBook_fe
-        ├── .env
-        ├── .gitignore
-        ├── .npmrc
-        ├── .prettierignore
-        ├── .prettierrc
-        ├── .svelte-kit
-        ├── bun.lockb
-        ├── eslint.config.js
-        ├── node_modules
-        ├── package.json
-        ├── postcss.config.js
-        ├── README.md
-        ├── src
-        ├── static
-        ├── svelte.config.js
-        ├── tailwind.config.ts
-        ├── tsconfig.json
-        └── vite.config.ts
+    ├── GBook_fe
+    │   ├── .env
+    │   ├── .gitignore
+    │   ├── .npmrc
+    │   ├── .prettierignore
+    │   ├── .prettierrc
+    │   ├── .svelte-kit
+    │   ├── bun.lockb
+    │   ├── eslint.config.js
+    │   ├── node_modules
+    │   ├── package.json
+    │   ├── postcss.config.js
+    │   ├── README.md
+    │   ├── src
+    │   ├── static
+    │   ├── svelte.config.js
+    │   ├── tailwind.config.ts
+    │   ├── tsconfig.json
+    │   └── vite.config.ts
+    └── README.md
 ```
 
-
 ### 📂 Project Index
+
 <details open>
 	<summary><b><code>D:\PERSONAL-PROJECT\GBOOK/</code></b></summary>
 	<details> <!-- __root__ Submodule -->
@@ -22805,6 +22803,7 @@
 </details>
 
 ---
+
 ## 🚀 Getting Started
 
 ### ☑️ Prerequisites
@@ -22815,7 +22814,6 @@ Before getting started with gbook, ensure your runtime environment meets the fol
 - **Package Manager:** Go modules, Npm, Yarn
 - **Container Runtime:** Docker
 
-
 ### ⚙️ Installation
 
 Install gbook using one of the following methods:
@@ -22823,17 +22821,18 @@ Install gbook using one of the following methods:
 **Build from source:**
 
 1. Clone the gbook repository:
+
 ```sh
 ❯ git clone ../gbook
 ```
 
 2. Navigate to the project directory:
+
 ```sh
 ❯ cd gbook
 ```
 
 3. Install the project dependencies:
-
 
 **Using `go modules`** &nbsp; [<img align="center" src="" />]()
 
@@ -22841,13 +22840,11 @@ Install gbook using one of the following methods:
 ❯ echo 'INSERT-INSTALL-COMMAND-HERE'
 ```
 
-
 **Using `npm`** &nbsp; [<img align="center" src="https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white" />](https://www.npmjs.com/)
 
 ```sh
 ❯ npm install
 ```
-
 
 **Using `yarn`** &nbsp; [<img align="center" src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style={badge_style}&logo=yarn&logoColor=white" />](https://yarnpkg.com/)
 
@@ -22855,17 +22852,14 @@ Install gbook using one of the following methods:
 ❯ yarn install
 ```
 
-
 **Using `docker`** &nbsp; [<img align="center" src="https://img.shields.io/badge/Docker-2CA5E0.svg?style={badge_style}&logo=docker&logoColor=white" />](https://www.docker.com/)
 
 ```sh
 ❯ docker build -t personal-project/gbook .
 ```
 
-
-
-
 ### 🤖 Usage
+
 Run gbook using the following command:
 **Using `go modules`** &nbsp; [<img align="center" src="" />]()
 
@@ -22873,13 +22867,11 @@ Run gbook using the following command:
 ❯ echo 'INSERT-RUN-COMMAND-HERE'
 ```
 
-
 **Using `npm`** &nbsp; [<img align="center" src="https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white" />](https://www.npmjs.com/)
 
 ```sh
 ❯ npm start
 ```
-
 
 **Using `yarn`** &nbsp; [<img align="center" src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style={badge_style}&logo=yarn&logoColor=white" />](https://yarnpkg.com/)
 
@@ -22887,15 +22879,14 @@ Run gbook using the following command:
 ❯ yarn start
 ```
 
-
 **Using `docker`** &nbsp; [<img align="center" src="https://img.shields.io/badge/Docker-2CA5E0.svg?style={badge_style}&logo=docker&logoColor=white" />](https://www.docker.com/)
 
 ```sh
 ❯ docker run -it {image_name}
 ```
 
-
 ### 🧪 Testing
+
 Run the test suite using the following command:
 **Using `go modules`** &nbsp; [<img align="center" src="" />]()
 
@@ -22903,13 +22894,11 @@ Run the test suite using the following command:
 ❯ echo 'INSERT-TEST-COMMAND-HERE'
 ```
 
-
 **Using `npm`** &nbsp; [<img align="center" src="https://img.shields.io/badge/npm-CB3837.svg?style={badge_style}&logo=npm&logoColor=white" />](https://www.npmjs.com/)
 
 ```sh
 ❯ npm test
 ```
-
 
 **Using `yarn`** &nbsp; [<img align="center" src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style={badge_style}&logo=yarn&logoColor=white" />](https://yarnpkg.com/)
 
@@ -22917,11 +22906,11 @@ Run the test suite using the following command:
 ❯ yarn test
 ```
 
-
 ---
+
 ## 📌 Project Roadmap
 
-- [X] **`Task 1`**: <strike>Implement feature one.</strike>
+- [x] **`Task 1`**: <strike>Implement feature one.</strike>
 - [ ] **`Task 2`**: Implement feature two.
 - [ ] **`Task 3`**: Implement feature three.
 
