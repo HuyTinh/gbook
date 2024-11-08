@@ -1,63 +1,66 @@
-<p align="center">
-    <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" align="center" width="30%">
-</p>
-<p align="center"><h1 align="center">GBOOK</h1></p>
-<p align="center">
+<div align="left">
+    <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/ec559a9f6bfd399b82bb44393651661b08aaf7ba/icons/folder-markdown-open.svg" width="40%" align="left" style="margin-right: 15px"/>
+    <div style="display: inline-block;">
+        <h2 style="display: inline-block; vertical-align: middle; margin-top: 0;">GBOOK</h2>
+        <p>
 	<em><code>❯ REPLACE-ME</code></em>
 </p>
-<p align="center">
+        <p>
 	<!-- local repository, no metadata badges. --></p>
-<p align="center">Built with the tools and technologies:</p>
-<p align="center">
-	<img src="https://img.shields.io/badge/npm-CB3837.svg?style=default&logo=npm&logoColor=white" alt="npm">
-	<img src="https://img.shields.io/badge/Autoprefixer-DD3735.svg?style=default&logo=Autoprefixer&logoColor=white" alt="Autoprefixer">
-	<img src="https://img.shields.io/badge/CoffeeScript-2F2625.svg?style=default&logo=CoffeeScript&logoColor=white" alt="CoffeeScript">
-	<img src="https://img.shields.io/badge/HTML5-E34F26.svg?style=default&logo=HTML5&logoColor=white" alt="HTML5">
-	<img src="https://img.shields.io/badge/Svelte-FF3E00.svg?style=default&logo=Svelte&logoColor=white" alt="Svelte">
-	<img src="https://img.shields.io/badge/esbuild-FFCF00.svg?style=default&logo=esbuild&logoColor=black" alt="esbuild">
-	<img src="https://img.shields.io/badge/.ENV-ECD53F.svg?style=default&logo=dotenv&logoColor=black" alt=".ENV">
+        <p>Built with the tools and technologies:</p>
+        <p>
+	<img src="https://img.shields.io/badge/npm-CB3837.svg?style=flat-square&logo=npm&logoColor=white" alt="npm">
+	<img src="https://img.shields.io/badge/Autoprefixer-DD3735.svg?style=flat-square&logo=Autoprefixer&logoColor=white" alt="Autoprefixer">
+	<img src="https://img.shields.io/badge/CoffeeScript-2F2625.svg?style=flat-square&logo=CoffeeScript&logoColor=white" alt="CoffeeScript">
+	<img src="https://img.shields.io/badge/HTML5-E34F26.svg?style=flat-square&logo=HTML5&logoColor=white" alt="HTML5">
+	<img src="https://img.shields.io/badge/Svelte-FF3E00.svg?style=flat-square&logo=Svelte&logoColor=white" alt="Svelte">
+	<img src="https://img.shields.io/badge/esbuild-FFCF00.svg?style=flat-square&logo=esbuild&logoColor=black" alt="esbuild">
+	<img src="https://img.shields.io/badge/.ENV-ECD53F.svg?style=flat-square&logo=dotenv&logoColor=black" alt=".ENV">
 	<br>
-	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=default&logo=JavaScript&logoColor=black" alt="JavaScript">
-	<img src="https://img.shields.io/badge/Go-00ADD8.svg?style=default&logo=Go&logoColor=white" alt="Go">
-	<img src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style=default&logo=Yarn&logoColor=white" alt="Yarn">
-	<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=default&logo=Docker&logoColor=white" alt="Docker">
-	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=default&logo=Python&logoColor=white" alt="Python">
-	<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=default&logo=TypeScript&logoColor=white" alt="TypeScript">
-	<img src="https://img.shields.io/badge/PHP-777BB4.svg?style=default&logo=PHP&logoColor=white" alt="PHP">
+	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=flat-square&logo=JavaScript&logoColor=black" alt="JavaScript">
+	<img src="https://img.shields.io/badge/Go-00ADD8.svg?style=flat-square&logo=Go&logoColor=white" alt="Go">
+	<img src="https://img.shields.io/badge/Yarn-2C8EBB.svg?style=flat-square&logo=Yarn&logoColor=white" alt="Yarn">
+	<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=flat-square&logo=Docker&logoColor=white" alt="Docker">
+	<img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat-square&logo=Python&logoColor=white" alt="Python">
+	<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=flat-square&logo=TypeScript&logoColor=white" alt="TypeScript">
+	<img src="https://img.shields.io/badge/PHP-777BB4.svg?style=flat-square&logo=PHP&logoColor=white" alt="PHP">
 </p>
-<br>
+    </div>
+</div>
+<br clear="left"/>
 
-##  Table of Contents
+<details><summary>Table of Contents</summary>
 
-- [ Overview](#-overview)
-- [ Features](#-features)
-- [ Project Structure](#-project-structure)
-  - [ Project Index](#-project-index)
-- [ Getting Started](#-getting-started)
-  - [ Prerequisites](#-prerequisites)
-  - [ Installation](#-installation)
-  - [ Usage](#-usage)
-  - [ Testing](#-testing)
-- [ Project Roadmap](#-project-roadmap)
-- [ Contributing](#-contributing)
-- [ License](#-license)
-- [ Acknowledgments](#-acknowledgments)
+- [📍 Overview](#-overview)
+- [👾 Features](#-features)
+- [📁 Project Structure](#-project-structure)
+  - [📂 Project Index](#-project-index)
+- [🚀 Getting Started](#-getting-started)
+  - [☑️ Prerequisites](#-prerequisites)
+  - [⚙️ Installation](#-installation)
+  - [🤖 Usage](#🤖-usage)
+  - [🧪 Testing](#🧪-testing)
+- [📌 Project Roadmap](#-project-roadmap)
+- [🔰 Contributing](#-contributing)
+- [🎗 License](#-license)
+- [🙌 Acknowledgments](#-acknowledgments)
 
----
+</details>
+<hr>
 
-##  Overview
-
-<code>❯ REPLACE-ME</code>
-
----
-
-##  Features
+## 📍 Overview
 
 <code>❯ REPLACE-ME</code>
 
 ---
 
-##  Project Structure
+## 👾 Features
+
+<code>❯ REPLACE-ME</code>
+
+---
+
+## 📁 Project Structure
 
 ```sh
 └── gbook/
@@ -95,7 +98,7 @@
 ```
 
 
-###  Project Index
+### 📂 Project Index
 <details open>
 	<summary><b><code>D:\PERSONAL-PROJECT\GBOOK/</code></b></summary>
 	<details> <!-- __root__ Submodule -->
@@ -22802,9 +22805,9 @@
 </details>
 
 ---
-##  Getting Started
+## 🚀 Getting Started
 
-###  Prerequisites
+### ☑️ Prerequisites
 
 Before getting started with gbook, ensure your runtime environment meets the following requirements:
 
@@ -22813,7 +22816,7 @@ Before getting started with gbook, ensure your runtime environment meets the fol
 - **Container Runtime:** Docker
 
 
-###  Installation
+### ⚙️ Installation
 
 Install gbook using one of the following methods:
 
@@ -22862,7 +22865,7 @@ Install gbook using one of the following methods:
 
 
 
-###  Usage
+### 🤖 Usage
 Run gbook using the following command:
 **Using `go modules`** &nbsp; [<img align="center" src="" />]()
 
@@ -22892,7 +22895,7 @@ Run gbook using the following command:
 ```
 
 
-###  Testing
+### 🧪 Testing
 Run the test suite using the following command:
 **Using `go modules`** &nbsp; [<img align="center" src="" />]()
 
@@ -22916,7 +22919,7 @@ Run the test suite using the following command:
 
 
 ---
-##  Project Roadmap
+## 📌 Project Roadmap
 
 - [X] **`Task 1`**: <strike>Implement feature one.</strike>
 - [ ] **`Task 2`**: Implement feature two.
@@ -22924,7 +22927,7 @@ Run the test suite using the following command:
 
 ---
 
-##  Contributing
+## 🔰 Contributing
 
 - **💬 [Join the Discussions](https://LOCAL/personal-project/gbook/discussions)**: Share your insights, provide feedback, or ask questions.
 - **🐛 [Report Issues](https://LOCAL/personal-project/gbook/issues)**: Submit bugs found or log feature requests for the `gbook` project.
@@ -22967,13 +22970,13 @@ Run the test suite using the following command:
 
 ---
 
-##  License
+## 🎗 License
 
 This project is protected under the [SELECT-A-LICENSE](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
 
 ---
 
-##  Acknowledgments
+## 🙌 Acknowledgments
 
 - List any resources, contributors, inspiration, etc. here.
 
