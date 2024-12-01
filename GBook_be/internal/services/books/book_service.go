@@ -3,6 +3,7 @@ package books
 import (
 	APIResponse "GBook_be/internal/dto/response" // Nhập gói để xử lý phản hồi API
 	"GBook_be/internal/models"                   // Nhập gói mô hình để sử dụng các kiểu dữ liệu
+	"strconv"
 
 	"github.com/gin-gonic/gin" // Nhập gói gin để xây dựng ứng dụng web
 )
@@ -96,4 +97,33 @@ func (bs *BookService) SaveBook(c *gin.Context) {
 	}
 
 	c.JSON(200, APIResponse.InitializeAPIResponse(1000, "", successSaveBook)) // Trả về phản hồi API thành công
+}
+
+func (bs *BookService) FindBookById(c *gin.Context) {
+
+	bookId, err := strconv.ParseInt(c.Param("id"), 10, 64)
+
+	if err != nil {
+		c.JSON(400, APIResponse.InitializeAPIResponse(400, err.Error(), ""))
+	}
+
+	bookFindBySlug, err := bs.repository.FindBookById(int64(bookId))
+
+	if err != nil {
+		c.JSON(400, APIResponse.InitializeAPIResponse(400, err.Error(), ""))
+	}
+
+	c.JSON(200, APIResponse.InitializeAPIResponse(1000, "", bookFindBySlug))
+}
+
+func (bs *BookService) FindBookBySlug(c *gin.Context) {
+	bookSlug := c.Param("slug")
+
+	bookFindBySlug, err := bs.repository.FindBookBySlug(bookSlug)
+
+	if err != nil {
+		c.JSON(400, APIResponse.InitializeAPIResponse(400, err.Error(), ""))
+	}
+
+	c.JSON(200, APIResponse.InitializeAPIResponse(1000, "", bookFindBySlug))
 }

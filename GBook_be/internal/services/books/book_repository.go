@@ -77,23 +77,6 @@ func (br BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
 	return books, nil // Trả về danh sách sách
 }
 
-// Lưu sách mới vào cơ sở dữ liệu
-func (br BookRepositoryImpl) SaveBook(saveBook models.Book) (models.Book, error) {
-	var book models.Book // Biến để lưu sách
-
-	// Kiểm tra xem sách đã tồn tại chưa
-	if err := br.db.First(&book, saveBook.ID).Error; err != nil {
-		return models.Book{}, err // Trả về lỗi nếu không tìm thấy
-	}
-
-	// Lưu sách mới vào cơ sở dữ liệu
-	if err := br.db.Create(&saveBook).Error; err != nil {
-		return models.Book{}, err // Trả về lỗi nếu lưu không thành công
-	}
-
-	return book, nil // Trả về sách đã lưu
-}
-
 // Tìm sách theo ID
 func (br BookRepositoryImpl) FindBookById(bookId int64) (models.Book, error) {
 	var book models.Book // Biến để lưu sách
@@ -115,7 +98,7 @@ func (br BookRepositoryImpl) FindBookBySlug(bookSlug string) (models.Book, error
 	var book models.Book // Biến để lưu sách
 
 	// Tìm sách theo slug
-	if err := br.db.Preload("Books").Where("slug = ?", bookSlug).First(&book).Error; err != nil {
+	if err := br.db.Preload("Author").Where("slug = ?", bookSlug).First(&book).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return models.Book{}, fmt.Errorf("book with Slug %s not found", bookSlug) // Trả về lỗi nếu không tìm thấy sách
 		}
@@ -124,4 +107,20 @@ func (br BookRepositoryImpl) FindBookBySlug(bookSlug string) (models.Book, error
 	}
 
 	return book, nil // Trả về sách tìm thấy
+}
+
+// Lưu sách mới vào cơ sở dữ liệu
+func (br BookRepositoryImpl) SaveBook(saveBook models.Book) (models.Book, error) {
+	var book models.Book // Biến để lưu sách
+
+	// Lưu sách mới vào cơ sở dữ liệu
+	if err := br.db.Create(&saveBook).Error; err != nil {
+		return models.Book{}, err // Trả về lỗi nếu lưu không thành công
+	}
+
+	if err := br.db.First(&book, saveBook.ID).Error; err != nil {
+		return models.Book{}, fmt.Errorf("create book fail") // Trả về lỗi nếu không tìm thấy sách
+	}
+
+	return book, nil // Trả về sách đã lưu
 }

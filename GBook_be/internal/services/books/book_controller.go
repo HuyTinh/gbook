@@ -16,6 +16,16 @@ func ProvideBookController(service BookService, bookRoute BookRoute) server.Cont
 				Controller: service.GetAllBook, // Hàm controller để xử lý yêu cầu
 			},
 			{
+				Method:     HTTPMethod.GET,       // Phương thức HTTP để lấy tất cả sách
+				Path:       "/:id",               // Đường dẫn cho tuyến đường (gốc của endpoint sách)
+				Controller: service.FindBookById, // Hàm controller để xử lý yêu cầu
+			},
+			{
+				Method:     HTTPMethod.GET,         // Phương thức HTTP để lấy tất cả sách
+				Path:       "/slug/:slug",          // Đường dẫn cho tuyến đường (gốc của endpoint sách)
+				Controller: service.FindBookBySlug, // Hàm controller để xử lý yêu cầu
+			},
+			{
 				Method:     HTTPMethod.POST,  // Phương thức HTTP để lưu một sách mới
 				Path:       "",               // Đường dẫn cho tuyến đường (gốc của endpoint sách)
 				Controller: service.SaveBook, // Hàm controller để xử lý yêu cầu
