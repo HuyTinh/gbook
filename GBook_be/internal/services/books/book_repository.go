@@ -4,8 +4,8 @@ import (
 	"GBook_be/internal/models" // Nhập gói mô hình để sử dụng các kiểu dữ liệu
 	"errors"                   // Nhập gói errors để xử lý lỗi
 	"fmt"                      // Nhập gói fmt để định dạng chuỗi
-	"sync"                     // Nhập gói sync để sử dụng WaitGroup
 
+	// Nhập gói sync để sử dụng WaitGroup
 	"gorm.io/gorm" // Nhập gói GORM để làm việc với cơ sở dữ liệu
 )
 
@@ -28,19 +28,18 @@ type (
 )
 
 // Cung cấp một thể hiện của BookRepositoryImpl
-func ProvideBookRepository(db *gorm.DB) BookRepository {
+func NewBookRepository(db *gorm.DB) BookRepository {
 	return &BookRepositoryImpl{
 		db: db, // Khởi tạo BookRepositoryImpl với kết nối cơ sở dữ liệu
 	}
 }
 
 // Tìm tất cả sách và trả về danh sách sách
-func (br BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
+func (br *BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
 	batchSize := 512 * 3 // Kích thước lô
 	offset := 0          // Offset để phân trang
 
 	var books []models.Book             // Danh sách sách
-	var wg sync.WaitGroup               // Đối tượng WaitGroup để đồng bộ hóa
 	results := make(chan []models.Book) // Kênh để nhận kết quả
 	done := make(chan struct{})         // Kênh để báo hiệu hoàn thành
 
@@ -71,14 +70,13 @@ func (br BookRepositoryImpl) FindAllBook() ([]models.Book, error) {
 		close(done) // Gửi tín hiệu hoàn thành
 	}()
 
-	wg.Wait() // Đợi cho tất cả các goroutine hoàn thành
-	<-done    // Chờ cho kết quả hoàn thành
+	<-done // Chờ cho kết quả hoàn thành
 
 	return books, nil // Trả về danh sách sách
 }
 
 // Tìm sách theo ID
-func (br BookRepositoryImpl) FindBookById(bookId int64) (models.Book, error) {
+func (br *BookRepositoryImpl) FindBookById(bookId int64) (models.Book, error) {
 	var book models.Book // Biến để lưu sách
 
 	// Tìm sách theo ID
@@ -94,7 +92,7 @@ func (br BookRepositoryImpl) FindBookById(bookId int64) (models.Book, error) {
 }
 
 // Tìm sách theo slug
-func (br BookRepositoryImpl) FindBookBySlug(bookSlug string) (models.Book, error) {
+func (br *BookRepositoryImpl) FindBookBySlug(bookSlug string) (models.Book, error) {
 	var book models.Book // Biến để lưu sách
 
 	// Tìm sách theo slug
@@ -110,7 +108,7 @@ func (br BookRepositoryImpl) FindBookBySlug(bookSlug string) (models.Book, error
 }
 
 // Lưu sách mới vào cơ sở dữ liệu
-func (br BookRepositoryImpl) SaveBook(saveBook models.Book) (models.Book, error) {
+func (br *BookRepositoryImpl) SaveBook(saveBook models.Book) (models.Book, error) {
 	var book models.Book // Biến để lưu sách
 
 	// Lưu sách mới vào cơ sở dữ liệu

@@ -12,8 +12,8 @@ type BookRoute struct {
 }
 
 // ProvideBookRouter cung cấp BookRoute bằng cách tạo một nhóm router dựa trên gin.Engine.
-func ProvideBookRouter(routerGroup *gin.Engine) BookRoute {
-	return BookRoute{
+func NewBookRouter(routerGroup *gin.Engine) *BookRoute {
+	return &BookRoute{
 		route: routerGroup.Group(os.Getenv("BOOK_END_POINT")), // Tạo nhóm router với đường dẫn từ biến môi trường BOOK_END_POINT
 	}
 }

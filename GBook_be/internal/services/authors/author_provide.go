@@ -7,10 +7,10 @@ import (
 // ProvideAuthors cung cấp các thành phần liên quan đến tác giả cho Fx.
 func ProvideAuthors() fx.Option {
 	return fx.Provide(
-		ProvideAuthorRepository, // Cung cấp AuthorRepository
-		ProvideAuthorService,    // Cung cấp AuthorService
-		ProvideAuthorRouter,     // Cung cấp AuthorRouter
-		fx.Annotate(ProvideAuthorController, // Cung cấp AuthorController với tag
+		NewAuthorRepository, // Cung cấp AuthorRepository
+		NewAuthorService,    // Cung cấp AuthorService
+		NewAuthorRouter,     // Cung cấp AuthorRouter
+		fx.Annotate(NewAuthorController, // Cung cấp AuthorController với tag
 			fx.ResultTags(`group:"controllers"`), // Đánh dấu để nhóm controllers
 		),
 	)

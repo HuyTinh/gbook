@@ -13,8 +13,8 @@ type AuthorService struct {
 }
 
 // ProvideAuthorService cung cấp AuthorService với repository đã cho.
-func ProvideAuthorService(bookRepository AuthorRepository) AuthorService {
-	return AuthorService{
+func NewAuthorService(bookRepository AuthorRepository) *AuthorService {
+	return &AuthorService{
 		repository: bookRepository, // Khởi tạo AuthorService với repository
 	}
 }

@@ -6,7 +6,7 @@ import (
 )
 
 // ProvideAuthorController cung cấp một Controller cho tác giả, kết nối dịch vụ với các route.
-func ProvideAuthorController(service AuthorService, authorRoute AuthorRoute) server.Controller {
+func NewAuthorController(service *AuthorService, authorRoute *AuthorRoute) server.Controller {
 	return server.Controller{
 		RouterGroup: authorRoute.route, // Nhóm router cho các route của tác giả
 		Routes: []server.Route{ // Định nghĩa các route cho controller

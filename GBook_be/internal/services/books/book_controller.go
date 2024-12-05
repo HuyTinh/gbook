@@ -6,7 +6,7 @@ import (
 )
 
 // ProvideBookController thiết lập controller cho sách với các tuyến đường và dịch vụ của nó.
-func ProvideBookController(service BookService, bookRoute BookRoute) server.Controller {
+func NewBookController(service *BookService, bookRoute *BookRoute) server.Controller {
 	return server.Controller{
 		RouterGroup: bookRoute.route, // Đặt nhóm router cho controller
 		Routes: []server.Route{

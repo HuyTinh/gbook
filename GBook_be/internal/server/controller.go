@@ -21,15 +21,15 @@ type Controller struct {
 }
 
 // Cấu trúc ProvideControllerParams định nghĩa các tham số đầu vào cho ProvideController
-type ProvideControllerParams struct {
+type NewControllerParams struct {
 	fx.In
 	Controllers []Controller `group:"controllers"` // Nhập danh sách controllers với tag "controllers"
 }
 
 // ProvideController cung cấp các route cho Gin Router từ danh sách controllers
-func ProvideController(controllerParams ProvideControllerParams) {
+func ProvideController(params NewControllerParams) {
 	// Lặp qua từng controller được cung cấp
-	for _, controller := range controllerParams.Controllers {
+	for _, controller := range params.Controllers {
 		routerGroup := controller.RouterGroup // Lấy nhóm router từ controller
 		routes := controller.Routes           // Lấy danh sách các route từ controller
 

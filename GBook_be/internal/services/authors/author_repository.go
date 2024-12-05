@@ -2,8 +2,7 @@ package authors
 
 import (
 	"GBook_be/internal/models" // Nhập gói mô hình để sử dụng các kiểu dữ liệu
-	"sync"                     // Nhập gói sync để sử dụng WaitGroup
-
+	// Nhập gói sync để sử dụng WaitGroup
 	"gorm.io/gorm" // Nhập gói GORM để làm việc với cơ sở dữ liệu
 )
 
@@ -25,19 +24,18 @@ type (
 )
 
 // Cung cấp một thể hiện của AuthorRepositoryImpl
-func ProvideAuthorRepository(db *gorm.DB) AuthorRepository {
+func NewAuthorRepository(db *gorm.DB) AuthorRepository {
 	return &AuthorRepositoryImpl{
 		db: db, // Khởi tạo AuthorRepositoryImpl với kết nối cơ sở dữ liệu
 	}
 }
 
 // Tìm tất cả tác giả và trả về danh sách tác giả
-func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
+func (ar *AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 	batchSize := 512 * 3 // Kích thước lô
 
 	var authors []models.Author           // Danh sách tác giả
 	offset := 0                           // Offset để phân trang
-	var wg sync.WaitGroup                 // Đối tượng WaitGroup để đồng bộ hóa
 	results := make(chan []models.Author) // Kênh để nhận kết quả
 	done := make(chan struct{})           // Kênh để báo hiệu hoàn thành
 
@@ -69,14 +67,13 @@ func (ar AuthorRepositoryImpl) FindAllAuthor() ([]models.Author, error) {
 	}()
 
 	// Chờ cho tất cả các lô được xử lý
-	wg.Wait() // Đợi cho tất cả goroutine hoàn thành
-	<-done    // Chờ cho kết quả hoàn thành
+	<-done // Chờ cho kết quả hoàn thành
 
 	return authors, nil // Trả về danh sách tác giả
 }
 
 // Tìm tác giả theo ID
-func (ar AuthorRepositoryImpl) FindAuthorById(authorId int64) (models.Author, error) {
+func (ar *AuthorRepositoryImpl) FindAuthorById(authorId int64) (models.Author, error) {
 	var author models.Author // Biến để lưu tác giả
 
 	// Tìm tác giả theo ID
@@ -88,7 +85,7 @@ func (ar AuthorRepositoryImpl) FindAuthorById(authorId int64) (models.Author, er
 }
 
 // Tìm tác giả theo tên
-func (ar AuthorRepositoryImpl) FindAuthorByName(authorName string) (models.Author, error) {
+func (ar *AuthorRepositoryImpl) FindAuthorByName(authorName string) (models.Author, error) {
 	var author models.Author // Biến để lưu tác giả
 
 	// Tìm tác giả theo tên
@@ -100,7 +97,7 @@ func (ar AuthorRepositoryImpl) FindAuthorByName(authorName string) (models.Autho
 }
 
 // Lưu tác giả mới vào cơ sở dữ liệu
-func (ar AuthorRepositoryImpl) SaveAuthor(saveAuthor models.Author) (models.Author, error) {
+func (ar *AuthorRepositoryImpl) SaveAuthor(saveAuthor models.Author) (models.Author, error) {
 	var author models.Author // Biến để lưu tác giả
 
 	// Kiểm tra xem tác giả đã tồn tại chưa

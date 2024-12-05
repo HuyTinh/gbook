@@ -12,9 +12,9 @@ type AuthorRoute struct {
 }
 
 // ProvideAuthorRouter cung cấp AuthorRoute với routerGroup đã cho.
-func ProvideAuthorRouter(routerGroup *gin.Engine) AuthorRoute {
+func NewAuthorRouter(routerGroup *gin.Engine) *AuthorRoute {
 	// Khởi tạo nhóm route với endpoint lấy từ biến môi trường
-	return AuthorRoute{
+	return &AuthorRoute{
 		route: routerGroup.Group(os.Getenv("AUTHOR_END_POINT")), // Tạo một nhóm route con từ router chính
 	}
 }

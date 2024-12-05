@@ -14,9 +14,9 @@ type BookService struct {
 }
 
 // ProvideBookService cung cấp BookService với repository đã cho.
-func ProvideBookService(bookRepository BookRepository) BookService {
-	return BookService{
-		repository: bookRepository, // Khởi tạo BookService với repository
+func NewBookService(repo BookRepository) *BookService {
+	return &BookService{
+		repository: repo, // Khởi tạo BookService với repository
 	}
 }
 
