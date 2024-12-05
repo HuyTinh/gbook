@@ -1,4 +1,4 @@
 <script>
 </script>
 
-<main></main>
+<main>Chào</main>

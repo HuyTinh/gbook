@@ -1,4 +1,4 @@
-import type { APIResponse } from "../../types/api-response";
+import type { APIResponse } from "../../@types/api-response";
 import axiosClient from "../axios-client"
 import type { IBook } from "./book.type";
 
